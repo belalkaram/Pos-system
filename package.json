@@ -1,0 +1,79 @@
+{
+  "name": "smart-accountant-pos",
+  "version": "2.5.0",
+  "description": "Smart POS and Inventory Management System",
+  "main": "electron-main.js",
+  "author": "Smart Gourmet Systems",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "electron .",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
+    "build:exe": "npm run build && electron-builder build --win --x64",
+    "build:portable": "npm run build && electron-builder build --win portable"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.5.0",
+    "lucide-react": "^0.562.0",
+    "qrcode.react": "^4.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^6.22.3",
+    "recharts": "^3.6.0",
+    "xlsx": "^0.18.5",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.smartgourmet.accountant",
+    "productName": "SmartAccountantPOS",
+    "directories": {
+      "output": "release",
+      "buildResources": "."
+    },
+    "files": [
+      "**/*",
+      "!src/**",
+      "!node_modules/.cache/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "المحاسب الذكي"
+    },
+    "extraFiles": [
+      {
+        "from": "preload.js",
+        "to": "preload.js"
+      },
+      {
+        "from": "database",
+        "to": "database"
+      }
+    ],
+    "asar": true
+  }
+}
