@@ -34,203 +34,261 @@ interface MenuItem {
   subItems?: SubMenuItem[];
 }
 
-// الأقسام الـ 14 الرئيسية (لوحة التحكم + 13 قسم)
-const MENU_STRUCTURE: MenuItem[] = [
-  // 0. لوحة التحكم
+interface MenuGroup {
+  id: string;
+  labelAr?: string;
+  labelEn?: string;
+  items: MenuItem[];
+}
+
+// تقسيم القوائم إلى مجموعات منطقية
+const MENU_GROUPS: MenuGroup[] = [
+  // المجموعة 1: لوحة التحكم
   {
-    id: 'dashboard',
-    labelAr: 'لوحة التحكم',
-    labelEn: 'Dashboard',
-    icon: LayoutDashboard,
-    path: '/'
+    id: 'main',
+    items: [
+      {
+        id: 'dashboard',
+        labelAr: 'لوحة التحكم',
+        labelEn: 'Dashboard',
+        icon: LayoutDashboard,
+        path: '/'
+      },
+    ]
   },
-  // 1. البيانات الأساسية
+  // المجموعة 2: البيانات الأساسية
   {
-    id: 'basic-data',
+    id: 'basic',
     labelAr: 'البيانات الأساسية',
     labelEn: 'Basic Data',
-    icon: Database,
-    subItems: [
-      { path: '/basic-data/customers', labelAr: 'تعريف العملاء', labelEn: 'Customers Setup', icon: Users },
-      { path: '/basic-data/suppliers', labelAr: 'تعريف الموردين', labelEn: 'Suppliers Setup', icon: Truck },
-      { path: '/basic-data/branches', labelAr: 'الفروع والمخازن', labelEn: 'Branches & Warehouses', icon: Building2 },
-      { path: '/basic-data/categories', labelAr: 'فئات الأصناف', labelEn: 'Categories', icon: Grid },
-      { path: '/basic-data/items', labelAr: 'كارت الصنف', labelEn: 'Item Card', icon: Package },
-      { path: '/basic-data/price-lists', labelAr: 'قوائم الأسعار', labelEn: 'Price Lists', icon: FileText },
-      { path: '/basic-data/banks', labelAr: 'البنوك', labelEn: 'Banks', icon: Landmark },
-      { path: '/basic-data/agents', labelAr: 'المندوبين', labelEn: 'Sales Agents', icon: UserCheck },
+    items: [
+      {
+        id: 'basic-data',
+        labelAr: 'البيانات الأساسية',
+        labelEn: 'Basic Data',
+        icon: Database,
+        subItems: [
+          { path: '/basic-data/customers', labelAr: 'تعريف العملاء', labelEn: 'Customers Setup', icon: Users },
+          { path: '/basic-data/suppliers', labelAr: 'تعريف الموردين', labelEn: 'Suppliers Setup', icon: Truck },
+          { path: '/basic-data/branches', labelAr: 'الفروع والمخازن', labelEn: 'Branches & Warehouses', icon: Building2 },
+          { path: '/basic-data/categories', labelAr: 'فئات الأصناف', labelEn: 'Categories', icon: Grid },
+          { path: '/basic-data/items', labelAr: 'كارت الصنف', labelEn: 'Item Card', icon: Package },
+          { path: '/basic-data/price-lists', labelAr: 'قوائم الأسعار', labelEn: 'Price Lists', icon: FileText },
+          { path: '/basic-data/banks', labelAr: 'البنوك', labelEn: 'Banks', icon: Landmark },
+          { path: '/basic-data/agents', labelAr: 'المندوبين', labelEn: 'Sales Agents', icon: UserCheck },
+        ]
+      },
     ]
   },
-  // 2. إدارة العملاء
+  // المجموعة 3: العمليات التجارية
   {
-    id: 'customers',
-    labelAr: 'إدارة العملاء',
-    labelEn: 'Customers',
-    icon: Wallet,
-    subItems: [
-      { path: '/customers/receipts', labelAr: 'مقبوضات العملاء', labelEn: 'Customer Receipts', icon: Receipt },
-      { path: '/customers/accounts', labelAr: 'حسابات العملاء', labelEn: 'Customer Accounts', icon: FileSpreadsheet },
-      { path: '/customers/pricing', labelAr: 'أسعار العملاء', labelEn: 'Customer Pricing', icon: DollarSign },
-      { path: '/customers/discounts', labelAr: 'الخصم المسموح به', labelEn: 'Allowed Discounts', icon: TrendingUp },
+    id: 'operations',
+    labelAr: 'العمليات التجارية',
+    labelEn: 'Business Operations',
+    items: [
+      {
+        id: 'customers',
+        labelAr: 'إدارة العملاء',
+        labelEn: 'Customers',
+        icon: Wallet,
+        subItems: [
+          { path: '/customers/receipts', labelAr: 'مقبوضات العملاء', labelEn: 'Customer Receipts', icon: Receipt },
+          { path: '/customers/accounts', labelAr: 'حسابات العملاء', labelEn: 'Customer Accounts', icon: FileSpreadsheet },
+          { path: '/customers/pricing', labelAr: 'أسعار العملاء', labelEn: 'Customer Pricing', icon: DollarSign },
+          { path: '/customers/discounts', labelAr: 'الخصم المسموح به', labelEn: 'Allowed Discounts', icon: TrendingUp },
+        ]
+      },
+      {
+        id: 'suppliers',
+        labelAr: 'إدارة الموردين',
+        labelEn: 'Suppliers',
+        icon: Truck,
+        subItems: [
+          { path: '/suppliers/payments', labelAr: 'مدفوعات الموردين', labelEn: 'Supplier Payments', icon: CreditCard },
+          { path: '/suppliers/accounts', labelAr: 'حسابات الموردين', labelEn: 'Supplier Accounts', icon: FileSpreadsheet },
+          { path: '/suppliers/discounts', labelAr: 'الخصم المكتسب', labelEn: 'Earned Discounts', icon: TrendingUp },
+        ]
+      },
+      {
+        id: 'invoices',
+        labelAr: 'الفواتير',
+        labelEn: 'Invoices',
+        icon: Receipt,
+        subItems: [
+          { path: '/invoices/sales', labelAr: 'فواتير البيع', labelEn: 'Sales Invoices', icon: BarChart3 },
+          { path: '/invoices/purchases', labelAr: 'فواتير الشراء', labelEn: 'Purchase Invoices', icon: ClipboardList },
+          { path: '/invoices/sales-returns', labelAr: 'مرتجعات المبيعات', labelEn: 'Sales Returns', icon: Trash },
+          { path: '/invoices/purchase-returns', labelAr: 'مرتجعات المشتريات', labelEn: 'Purchase Returns', icon: Trash },
+          { path: '/invoices/reports', labelAr: 'تقارير الفواتير', labelEn: 'Invoice Reports', icon: FileText },
+          { path: '/invoices/deleted', labelAr: 'الفواتير المحذوفة', labelEn: 'Deleted Invoices', icon: Trash },
+        ]
+      },
     ]
   },
-  // 3. إدارة الموردين
+  // المجموعة 4: المخزون والتصنيع
   {
-    id: 'suppliers',
-    labelAr: 'إدارة الموردين',
-    labelEn: 'Suppliers',
-    icon: Truck,
-    subItems: [
-      { path: '/suppliers/payments', labelAr: 'مدفوعات الموردين', labelEn: 'Supplier Payments', icon: CreditCard },
-      { path: '/suppliers/accounts', labelAr: 'حسابات الموردين', labelEn: 'Supplier Accounts', icon: FileSpreadsheet },
-      { path: '/suppliers/discounts', labelAr: 'الخصم المكتسب', labelEn: 'Earned Discounts', icon: TrendingUp },
+    id: 'inventory-manufacturing',
+    labelAr: 'المخزون والتصنيع',
+    labelEn: 'Inventory & Manufacturing',
+    items: [
+      {
+        id: 'inventory',
+        labelAr: 'المخزون',
+        labelEn: 'Inventory',
+        icon: Archive,
+        subItems: [
+          { path: '/inventory/balances', labelAr: 'أرصدة المخزن', labelEn: 'Stock Balances', icon: Package },
+          { path: '/inventory/movement', labelAr: 'حركة المخزن', labelEn: 'Stock Movement', icon: TrendingUp },
+          { path: '/inventory/orders', labelAr: 'أذونات المخزن', labelEn: 'Stock Orders', icon: ClipboardList },
+          { path: '/inventory/count', labelAr: 'الجرد المخزني', labelEn: 'Stock Count', icon: Calculator },
+          { path: '/inventory/shortage', labelAr: 'نواقص المخزون', labelEn: 'Stock Shortage', icon: Bell },
+          { path: '/inventory/barcode', labelAr: 'طباعة الباركود', labelEn: 'Print Barcode', icon: Grid },
+          { path: '/inventory/profits', labelAr: 'أرباح الأصناف', labelEn: 'Item Profits', icon: DollarSign },
+        ]
+      },
+      {
+        id: 'manufacturing',
+        labelAr: 'التصنيع',
+        labelEn: 'Manufacturing',
+        icon: Factory,
+        subItems: [
+          { path: '/manufacturing/bom', labelAr: 'قوائم المواد (BOM)', labelEn: 'Bill of Materials', icon: ClipboardList },
+          { path: '/manufacturing/orders', labelAr: 'أوامر التصنيع', labelEn: 'Manufacturing Orders', icon: Settings },
+          { path: '/manufacturing/movement', labelAr: 'حركة مخزون التصنيع', labelEn: 'Manufacturing Stock', icon: TrendingUp },
+        ]
+      },
     ]
   },
-  // 4. الفواتير
+  // المجموعة 5: المبيعات
   {
-    id: 'invoices',
-    labelAr: 'الفواتير',
-    labelEn: 'Invoices',
-    icon: Receipt,
-    subItems: [
-      { path: '/invoices/sales', labelAr: 'فواتير البيع', labelEn: 'Sales Invoices', icon: BarChart3 },
-      { path: '/invoices/purchases', labelAr: 'فواتير الشراء', labelEn: 'Purchase Invoices', icon: ClipboardList },
-      { path: '/invoices/sales-returns', labelAr: 'مرتجعات المبيعات', labelEn: 'Sales Returns', icon: Trash },
-      { path: '/invoices/purchase-returns', labelAr: 'مرتجعات المشتريات', labelEn: 'Purchase Returns', icon: Trash },
-      { path: '/invoices/reports', labelAr: 'تقارير الفواتير', labelEn: 'Invoice Reports', icon: FileText },
-      { path: '/invoices/deleted', labelAr: 'الفواتير المحذوفة', labelEn: 'Deleted Invoices', icon: Trash },
+    id: 'sales',
+    labelAr: 'المبيعات',
+    labelEn: 'Sales',
+    items: [
+      {
+        id: 'sales-team',
+        labelAr: 'فريق المبيعات',
+        labelEn: 'Sales Team',
+        icon: Target,
+        subItems: [
+          { path: '/sales-team/dashboard', labelAr: 'لوحة المتابعة', labelEn: 'Dashboard', icon: LayoutDashboard },
+          { path: '/sales-team/targets', labelAr: 'أهداف المندوبين', labelEn: 'Agent Targets', icon: Target },
+          { path: '/sales-team/commissions', labelAr: 'تقارير الأداء والعمولات', labelEn: 'Performance & Commissions', icon: DollarSign },
+        ]
+      },
+      {
+        id: 'mobile-sales',
+        labelAr: 'المبيعات المتنقلة',
+        labelEn: 'Mobile Sales',
+        icon: Car,
+        subItems: [
+          { path: '/mobile-sales/vehicles', labelAr: 'السيارات', labelEn: 'Vehicles', icon: Car },
+          { path: '/mobile-sales/inventory', labelAr: 'جرد السيارات', labelEn: 'Vehicle Inventory', icon: Package },
+          { path: '/mobile-sales/operations', labelAr: 'العمليات والزيارات', labelEn: 'Operations & Visits', icon: ClipboardList },
+          { path: '/mobile-sales/routes', labelAr: 'خط السير', labelEn: 'Routes', icon: Route },
+          { path: '/mobile-sales/settlements', labelAr: 'التسويات والتقارير', labelEn: 'Settlements & Reports', icon: FileSpreadsheet },
+        ]
+      },
+      {
+        id: 'pos',
+        labelAr: 'نقطة البيع',
+        labelEn: 'Point of Sale',
+        icon: ShoppingCart,
+        subItems: [
+          { path: '/pos', labelAr: 'شاشة البيع', labelEn: 'Sales Screen', icon: ShoppingCart },
+          { path: '/pos/kitchen', labelAr: 'شاشة المطبخ (KDS)', labelEn: 'Kitchen Display', icon: ChefHat },
+          { path: '/pos/tables', labelAr: 'إدارة الطاولات', labelEn: 'Table Management', icon: LayoutGrid },
+          { path: '/pos/shifts', labelAr: 'الورديات', labelEn: 'Shifts', icon: History },
+          { path: '/pos/reports', labelAr: 'تقارير نقطة البيع', labelEn: 'POS Reports', icon: BarChart },
+        ]
+      },
     ]
   },
-  // 5. المخزون
+  // المجموعة 6: المالية
   {
-    id: 'inventory',
-    labelAr: 'المخزون',
-    labelEn: 'Inventory',
-    icon: Archive,
-    subItems: [
-      { path: '/inventory/balances', labelAr: 'أرصدة المخزن', labelEn: 'Stock Balances', icon: Package },
-      { path: '/inventory/movement', labelAr: 'حركة المخزن', labelEn: 'Stock Movement', icon: TrendingUp },
-      { path: '/inventory/orders', labelAr: 'أذونات المخزن', labelEn: 'Stock Orders', icon: ClipboardList },
-      { path: '/inventory/count', labelAr: 'الجرد المخزني', labelEn: 'Stock Count', icon: Calculator },
-      { path: '/inventory/shortage', labelAr: 'نواقص المخزون', labelEn: 'Stock Shortage', icon: Bell },
-      { path: '/inventory/barcode', labelAr: 'طباعة الباركود', labelEn: 'Print Barcode', icon: Grid },
-      { path: '/inventory/profits', labelAr: 'أرباح الأصناف', labelEn: 'Item Profits', icon: DollarSign },
+    id: 'finance',
+    labelAr: 'المالية',
+    labelEn: 'Finance',
+    items: [
+      {
+        id: 'treasury',
+        labelAr: 'الخزينة والبنوك',
+        labelEn: 'Treasury & Banks',
+        icon: Landmark,
+        subItems: [
+          { path: '/treasury/cash', labelAr: 'إدارة النقدية', labelEn: 'Cash Management', icon: Banknote },
+          { path: '/treasury/daily', labelAr: 'اليومية', labelEn: 'Daily Journal', icon: FileText },
+          { path: '/treasury/monthly-profits', labelAr: 'تقارير الأرباح الشهرية', labelEn: 'Monthly Profits', icon: BarChart },
+          { path: '/treasury/installments', labelAr: 'إدارة التقسيط', labelEn: 'Installments', icon: CreditCard },
+          { path: '/treasury/transfers', labelAr: 'التحويلات الداخلية', labelEn: 'Internal Transfers', icon: TrendingUp },
+          { path: '/treasury/bank-statements', labelAr: 'كشوف حساب البنوك', labelEn: 'Bank Statements', icon: FileSpreadsheet },
+          { path: '/treasury/reconciliation', labelAr: 'التسويات البنكية', labelEn: 'Bank Reconciliation', icon: Calculator },
+          { path: '/treasury/checks', labelAr: 'إدارة الشيكات', labelEn: 'Check Management', icon: CreditCard },
+        ]
+      },
+      {
+        id: 'accounting',
+        labelAr: 'الحسابات العامة',
+        labelEn: 'Accounting',
+        icon: Calculator,
+        subItems: [
+          { path: '/accounting/chart', labelAr: 'شجرة الحسابات', labelEn: 'Chart of Accounts', icon: ClipboardList },
+          { path: '/accounting/journal', labelAr: 'قيود اليومية', labelEn: 'Journal Entries', icon: FileText },
+          { path: '/accounting/ledger', labelAr: 'الأستاذ العام', labelEn: 'General Ledger', icon: BookOpen },
+          { path: '/accounting/cost-centers', labelAr: 'مراكز التكلفة', labelEn: 'Cost Centers', icon: Target },
+          { path: '/accounting/fixed-assets', labelAr: 'الأصول الثابتة', labelEn: 'Fixed Assets', icon: Building2 },
+          { path: '/accounting/trial-balance', labelAr: 'ميزان المراجعة', labelEn: 'Trial Balance', icon: BarChart },
+          { path: '/accounting/balance-sheet', labelAr: 'الميزانية العمومية', labelEn: 'Balance Sheet', icon: FileSpreadsheet },
+          { path: '/accounting/income-statement', labelAr: 'قائمة الدخل', labelEn: 'Income Statement', icon: TrendingUp },
+        ]
+      },
     ]
   },
-  // 6. التصنيع
+  // المجموعة 7: الموارد البشرية
   {
-    id: 'manufacturing',
-    labelAr: 'التصنيع',
-    labelEn: 'Manufacturing',
-    icon: Factory,
-    subItems: [
-      { path: '/manufacturing/bom', labelAr: 'قوائم المواد (BOM)', labelEn: 'Bill of Materials', icon: ClipboardList },
-      { path: '/manufacturing/orders', labelAr: 'أوامر التصنيع', labelEn: 'Manufacturing Orders', icon: Settings },
-      { path: '/manufacturing/movement', labelAr: 'حركة مخزون التصنيع', labelEn: 'Manufacturing Stock', icon: TrendingUp },
-    ]
-  },
-  // 7. فريق المبيعات
-  {
-    id: 'sales-team',
-    labelAr: 'فريق المبيعات',
-    labelEn: 'Sales Team',
-    icon: Target,
-    subItems: [
-      { path: '/sales-team/dashboard', labelAr: 'لوحة المتابعة', labelEn: 'Dashboard', icon: LayoutDashboard },
-      { path: '/sales-team/targets', labelAr: 'أهداف المندوبين', labelEn: 'Agent Targets', icon: Target },
-      { path: '/sales-team/commissions', labelAr: 'تقارير الأداء والعمولات', labelEn: 'Performance & Commissions', icon: DollarSign },
-    ]
-  },
-  // 8. الخزينة والبنوك
-  {
-    id: 'treasury',
-    labelAr: 'الخزينة والبنوك',
-    labelEn: 'Treasury & Banks',
-    icon: Landmark,
-    subItems: [
-      { path: '/treasury/cash', labelAr: 'إدارة النقدية', labelEn: 'Cash Management', icon: Banknote },
-      { path: '/treasury/daily', labelAr: 'اليومية', labelEn: 'Daily Journal', icon: FileText },
-      { path: '/treasury/monthly-profits', labelAr: 'تقارير الأرباح الشهرية', labelEn: 'Monthly Profits', icon: BarChart },
-      { path: '/treasury/installments', labelAr: 'إدارة التقسيط', labelEn: 'Installments', icon: CreditCard },
-      { path: '/treasury/transfers', labelAr: 'التحويلات الداخلية', labelEn: 'Internal Transfers', icon: TrendingUp },
-      { path: '/treasury/bank-statements', labelAr: 'كشوف حساب البنوك', labelEn: 'Bank Statements', icon: FileSpreadsheet },
-      { path: '/treasury/reconciliation', labelAr: 'التسويات البنكية', labelEn: 'Bank Reconciliation', icon: Calculator },
-      { path: '/treasury/checks', labelAr: 'إدارة الشيكات', labelEn: 'Check Management', icon: CreditCard },
-    ]
-  },
-  // 9. الحسابات العامة
-  {
-    id: 'accounting',
-    labelAr: 'الحسابات العامة',
-    labelEn: 'Accounting',
-    icon: Calculator,
-    subItems: [
-      { path: '/accounting/chart', labelAr: 'شجرة الحسابات', labelEn: 'Chart of Accounts', icon: ClipboardList },
-      { path: '/accounting/journal', labelAr: 'قيود اليومية', labelEn: 'Journal Entries', icon: FileText },
-      { path: '/accounting/ledger', labelAr: 'الأستاذ العام', labelEn: 'General Ledger', icon: BookOpen },
-      { path: '/accounting/cost-centers', labelAr: 'مراكز التكلفة', labelEn: 'Cost Centers', icon: Target },
-      { path: '/accounting/fixed-assets', labelAr: 'الأصول الثابتة', labelEn: 'Fixed Assets', icon: Building2 },
-      { path: '/accounting/trial-balance', labelAr: 'ميزان المراجعة', labelEn: 'Trial Balance', icon: BarChart },
-      { path: '/accounting/balance-sheet', labelAr: 'الميزانية العمومية', labelEn: 'Balance Sheet', icon: FileSpreadsheet },
-      { path: '/accounting/income-statement', labelAr: 'قائمة الدخل', labelEn: 'Income Statement', icon: TrendingUp },
-    ]
-  },
-  // 10. الموارد البشرية
-  {
-    id: 'hr',
+    id: 'hr-group',
     labelAr: 'الموارد البشرية',
     labelEn: 'Human Resources',
-    icon: Users,
-    subItems: [
-      { path: '/hr/employees', labelAr: 'إدارة الموظفين', labelEn: 'Employees', icon: UserCog },
-      { path: '/hr/attendance', labelAr: 'الحضور والانصراف', labelEn: 'Attendance', icon: Clock },
-      { path: '/hr/payroll', labelAr: 'مسير الرواتب', labelEn: 'Payroll', icon: DollarSign },
-      { path: '/hr/loans', labelAr: 'السلف والقروض', labelEn: 'Loans & Advances', icon: CreditCard },
+    items: [
+      {
+        id: 'hr',
+        labelAr: 'الموارد البشرية',
+        labelEn: 'Human Resources',
+        icon: Users,
+        subItems: [
+          { path: '/hr/employees', labelAr: 'إدارة الموظفين', labelEn: 'Employees', icon: UserCog },
+          { path: '/hr/attendance', labelAr: 'الحضور والانصراف', labelEn: 'Attendance', icon: Clock },
+          { path: '/hr/payroll', labelAr: 'مسير الرواتب', labelEn: 'Payroll', icon: DollarSign },
+          { path: '/hr/loans', labelAr: 'السلف والقروض', labelEn: 'Loans & Advances', icon: CreditCard },
+        ]
+      },
     ]
   },
-  // 11. المبيعات المتنقلة
+  // المجموعة 8: الإعدادات
   {
-    id: 'mobile-sales',
-    labelAr: 'المبيعات المتنقلة',
-    labelEn: 'Mobile Sales',
-    icon: Car,
-    subItems: [
-      { path: '/mobile-sales/vehicles', labelAr: 'السيارات', labelEn: 'Vehicles', icon: Car },
-      { path: '/mobile-sales/inventory', labelAr: 'جرد السيارات', labelEn: 'Vehicle Inventory', icon: Package },
-      { path: '/mobile-sales/operations', labelAr: 'العمليات والزيارات', labelEn: 'Operations & Visits', icon: ClipboardList },
-      { path: '/mobile-sales/routes', labelAr: 'خط السير', labelEn: 'Routes', icon: Route },
-      { path: '/mobile-sales/settlements', labelAr: 'التسويات والتقارير', labelEn: 'Settlements & Reports', icon: FileSpreadsheet },
-    ]
-  },
-  // 12. نقطة البيع
-  {
-    id: 'pos',
-    labelAr: 'نقطة البيع',
-    labelEn: 'Point of Sale',
-    icon: ShoppingCart,
-    subItems: [
-      { path: '/pos', labelAr: 'شاشة البيع', labelEn: 'Sales Screen', icon: ShoppingCart },
-      { path: '/pos/kitchen', labelAr: 'شاشة المطبخ (KDS)', labelEn: 'Kitchen Display', icon: ChefHat },
-      { path: '/pos/tables', labelAr: 'إدارة الطاولات', labelEn: 'Table Management', icon: LayoutGrid },
-      { path: '/pos/shifts', labelAr: 'الورديات', labelEn: 'Shifts', icon: History },
-      { path: '/pos/reports', labelAr: 'تقارير نقطة البيع', labelEn: 'POS Reports', icon: BarChart },
-    ]
-  },
-  // 13. الإعدادات
-  {
-    id: 'settings',
-    labelAr: 'الإعدادات',
-    labelEn: 'Settings',
-    icon: Settings,
-    subItems: [
-      { path: '/settings/users', labelAr: 'إدارة المستخدمين', labelEn: 'User Management', icon: Shield },
-      { path: '/settings/system', labelAr: 'إعدادات النظام', labelEn: 'System Settings', icon: Settings },
-      { path: '/settings/import', labelAr: 'استيراد البيانات', labelEn: 'Import Data', icon: Database },
-      { path: '/settings/audit', labelAr: 'سجل المراقبة', labelEn: 'Audit Log', icon: FileText },
-      { path: '/settings/backup', labelAr: 'النسخ الاحتياطي', labelEn: 'Backup', icon: HardDrive },
+    id: 'settings-group',
+    labelAr: 'النظام',
+    labelEn: 'System',
+    items: [
+      {
+        id: 'settings',
+        labelAr: 'الإعدادات',
+        labelEn: 'Settings',
+        icon: Settings,
+        subItems: [
+          { path: '/settings/users', labelAr: 'إدارة المستخدمين', labelEn: 'User Management', icon: Shield },
+          { path: '/settings/system', labelAr: 'إعدادات النظام', labelEn: 'System Settings', icon: Settings },
+          { path: '/settings/import', labelAr: 'استيراد البيانات', labelEn: 'Import Data', icon: Database },
+          { path: '/settings/audit', labelAr: 'سجل المراقبة', labelEn: 'Audit Log', icon: FileText },
+          { path: '/settings/backup', labelAr: 'النسخ الاحتياطي', labelEn: 'Backup', icon: HardDrive },
+        ]
+      },
     ]
   },
 ];
+
+// تحويل المجموعات إلى قائمة مسطحة للتوافق مع الكود القديم
+const MENU_STRUCTURE: MenuItem[] = MENU_GROUPS.flatMap(group => group.items);
 
 // Command Menu Component
 const CommandMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
@@ -515,16 +573,37 @@ const Layout: React.FC = () => {
 
         {/* Navigation */}
         <nav className="flex-1 py-4 overflow-y-auto no-scrollbar">
-          {MENU_STRUCTURE.map((menu) => (
-            <CollapsibleMenuItem
-              key={menu.id}
-              menu={menu}
-              isCollapsed={isCollapsed}
-              language={language}
-              onNavigate={() => setIsSidebarOpen(false)}
-              expandedMenus={expandedMenus}
-              toggleMenu={toggleMenu}
-            />
+          {MENU_GROUPS.map((group, groupIndex) => (
+            <div key={group.id}>
+              {/* عنوان المجموعة */}
+              {!isCollapsed && group.labelAr && (
+                <div className="px-6 py-2 mt-4 mb-2">
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-secondary/60">
+                    {language === 'ar' ? group.labelAr : group.labelEn}
+                  </h3>
+                </div>
+              )}
+
+              {/* عناصر المجموعة */}
+              {group.items.map((menu) => (
+                <CollapsibleMenuItem
+                  key={menu.id}
+                  menu={menu}
+                  isCollapsed={isCollapsed}
+                  language={language}
+                  onNavigate={() => setIsSidebarOpen(false)}
+                  expandedMenus={expandedMenus}
+                  toggleMenu={toggleMenu}
+                />
+              ))}
+
+              {/* فاصل بين المجموعات */}
+              {groupIndex < MENU_GROUPS.length - 1 && (
+                <div className="mx-6 my-3">
+                  <div className="h-px bg-gradient-to-r from-transparent via-cardAccent to-transparent" />
+                </div>
+              )}
+            </div>
           ))}
         </nav>
 
