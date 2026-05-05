@@ -154,7 +154,7 @@ const Presentation: React.FC = () => {
               B
             </div>
             <div>
-              <h3 className="text-white font-black text-lg">Developed by Eng. Belal Karam</h3>
+              <h3 className="text-white font-black text-lg">Developed by <a href="https://belalkaram.dev" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">Eng. Belal Karam</a></h3>
               <p className="text-secondary text-xs font-bold uppercase tracking-widest">Lead Software Architect</p>
             </div>
           </div>

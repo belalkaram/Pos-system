@@ -143,16 +143,58 @@ const AdminLayout: React.FC = () => {
 
     return (
         <div className="super-admin-container">
+            {/* Mobile Header */}
+            <div className="sa-mobile-header">
+                <button
+                    className="sa-mobile-menu-btn"
+                    onClick={() => setIsMobileOpen(true)}
+                >
+                    <MenuIcon size={22} />
+                </button>
+                <div className="sa-sidebar-logo" style={{ width: '36px', height: '36px', fontSize: '14px' }}>
+                    <span>SA</span>
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                        onClick={toggleTheme}
+                        className="sa-mobile-menu-btn"
+                        style={{ width: '36px', height: '36px' }}
+                    >
+                        {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                    </button>
+                    <button
+                        onClick={toggleLanguage}
+                        className="sa-mobile-menu-btn"
+                        style={{ width: '36px', height: '36px', fontWeight: 700, fontSize: '12px' }}
+                    >
+                        {language === 'ar' ? 'EN' : 'ع'}
+                    </button>
+                </div>
+            </div>
+
             {/* Mobile Overlay */}
-            {isMobileOpen && (
-                <div
-                    className="fixed inset-0 bg-black/60 z-50 lg:hidden backdrop-blur-sm"
-                    onClick={() => setIsMobileOpen(false)}
-                />
-            )}
+            <div
+                className={`sa-sidebar-overlay ${isMobileOpen ? 'active' : ''}`}
+                onClick={() => setIsMobileOpen(false)}
+            />
 
             {/* Sidebar */}
             <aside className={`sa-sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobileOpen ? 'open' : ''}`}>
+                {/* Close button for mobile */}
+                <button
+                    className="sa-mobile-menu-btn mobile-only"
+                    onClick={() => setIsMobileOpen(false)}
+                    style={{
+                        position: 'absolute',
+                        top: '16px',
+                        left: isRTL ? '16px' : 'auto',
+                        right: isRTL ? 'auto' : '16px',
+                        zIndex: 10
+                    }}
+                >
+                    <X size={20} />
+                </button>
+
                 {/* Logo Section */}
                 <div className="sa-sidebar-header">
                     <div className="sa-sidebar-logo">
@@ -204,10 +246,21 @@ const AdminLayout: React.FC = () => {
                     <NavItem to="/super-admin/admins" icon={Shield} label={t('adminUsers')} isCollapsed={isCollapsed} />
                     <NavItem to="/super-admin/notifications" icon={Bell} label={t('notifications')} isCollapsed={isCollapsed} />
                     <NavItem to="/super-admin/maintenance" icon={Wrench} label={t('maintenance')} isCollapsed={isCollapsed} />
+
+                    {/* Mobile-only logout in sidebar */}
+                    <div className="mobile-only" style={{ padding: '20px 12px', marginTop: 'auto' }}>
+                        <button
+                            onClick={handleLogout}
+                            className="sa-btn sa-btn-danger"
+                            style={{ width: '100%' }}
+                        >
+                            <LogOut size={18} /> {t('logout')}
+                        </button>
+                    </div>
                 </nav>
 
-                {/* Collapse Toggle */}
-                <div style={{ padding: '16px', borderTop: '1px solid var(--sa-border)' }}>
+                {/* Collapse Toggle - Desktop only */}
+                <div className="desktop-only" style={{ padding: '16px', borderTop: '1px solid var(--sa-border)' }}>
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
                         className="sa-btn sa-btn-ghost"
@@ -223,17 +276,18 @@ const AdminLayout: React.FC = () => {
             </aside>
 
             {/* Main Content */}
-            <div className="sa-main-content sa-scrollbar" style={{ marginInlineStart: isCollapsed ? '80px' : '280px', height: '100vh', overflowY: 'auto' }}>
-                {/* Header Bar */}
-                <header style={{
+            <div className="sa-main-content sa-scrollbar" style={{ height: '100vh', overflowY: 'auto' }}>
+                {/* Header Bar - Desktop */}
+                <header className="desktop-only" style={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     marginBottom: '32px',
-                    gap: '20px'
+                    gap: '20px',
+                    flexWrap: 'wrap'
                 }}>
                     {/* Page Title */}
-                    <div style={{ flex: 1 }}>
+                    <div style={{ flex: 1, minWidth: '200px' }}>
                         <h1 className="sa-page-title">{getPageTitle()}</h1>
                         <p style={{ color: 'var(--sa-text-secondary)', fontSize: '14px', marginTop: '4px' }}>
                             {new Date().toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
@@ -241,19 +295,19 @@ const AdminLayout: React.FC = () => {
                     </div>
 
                     {/* Header Actions */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        {/* Search */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                        {/* Search - Hide on smaller screens */}
                         <button
                             onClick={() => setIsSearchOpen(true)}
-                            className="sa-btn sa-btn-ghost"
-                            style={{ padding: '10px 16px', gap: '10px' }}
+                            className="sa-btn sa-btn-ghost sa-header-search"
+                            style={{ padding: '10px 16px', gap: '10px', width: 'auto' }}
                         >
                             <Search size={16} />
                             <span style={{ fontSize: '12px', opacity: 0.7 }}>Ctrl+K</span>
                         </button>
 
                         {/* Notifications */}
-                        <button className="sa-btn sa-btn-ghost" style={{ padding: '10px', position: 'relative' }}>
+                        <button className="sa-btn sa-btn-ghost" style={{ padding: '10px', position: 'relative', width: 'auto' }}>
                             <Bell size={18} />
                             <span style={{
                                 position: 'absolute',
@@ -270,7 +324,7 @@ const AdminLayout: React.FC = () => {
                         <button
                             onClick={toggleTheme}
                             className="sa-btn sa-btn-ghost"
-                            style={{ padding: '10px' }}
+                            style={{ padding: '10px', width: 'auto' }}
                         >
                             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                         </button>
@@ -279,13 +333,13 @@ const AdminLayout: React.FC = () => {
                         <button
                             onClick={toggleLanguage}
                             className="sa-btn sa-btn-ghost"
-                            style={{ padding: '10px', fontWeight: 700 }}
+                            style={{ padding: '10px', fontWeight: 700, width: 'auto' }}
                         >
                             {language === 'ar' ? 'EN' : 'ع'}
                         </button>
 
                         {/* Admin Profile */}
-                        <div style={{
+                        <div className="sa-header-profile-details" style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
@@ -318,13 +372,21 @@ const AdminLayout: React.FC = () => {
                         <button
                             onClick={handleLogout}
                             className="sa-btn sa-btn-danger"
-                            style={{ padding: '10px' }}
+                            style={{ padding: '10px', width: 'auto' }}
                             title={t('logout')}
                         >
                             <LogOut size={18} />
                         </button>
                     </div>
                 </header>
+
+                {/* Mobile Page Title */}
+                <div className="mobile-only" style={{ marginBottom: '20px' }}>
+                    <h1 className="sa-page-title">{getPageTitle()}</h1>
+                    <p style={{ color: 'var(--sa-text-secondary)', fontSize: '12px', marginTop: '4px' }}>
+                        {new Date().toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                    </p>
+                </div>
 
                 {/* Page Content */}
                 <main>
@@ -343,7 +405,8 @@ const AdminLayout: React.FC = () => {
                         display: 'flex',
                         alignItems: 'flex-start',
                         justifyContent: 'center',
-                        paddingTop: '15vh',
+                        paddingTop: '10vh',
+                        padding: '10vh 16px 0',
                         zIndex: 200
                     }}
                     onClick={() => setIsSearchOpen(false)}
@@ -361,7 +424,7 @@ const AdminLayout: React.FC = () => {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '16px',
-                            padding: '20px 24px',
+                            padding: '16px 20px',
                             borderBottom: '1px solid var(--sa-border)'
                         }}>
                             <Search size={20} style={{ color: 'var(--sa-text-secondary)' }} />
@@ -389,7 +452,7 @@ const AdminLayout: React.FC = () => {
                                 border: '1px solid var(--sa-border)'
                             }}>ESC</kbd>
                         </div>
-                        <div style={{ padding: '12px', maxHeight: '400px', overflowY: 'auto' }} className="sa-scrollbar">
+                        <div style={{ padding: '12px', maxHeight: '50vh', overflowY: 'auto' }} className="sa-scrollbar">
                             <p style={{ padding: '20px', textAlign: 'center', color: 'var(--sa-text-secondary)', fontSize: '14px' }}>
                                 {t('search')}
                             </p>

@@ -182,12 +182,12 @@ const AdminDashboard: React.FC = () => {
             <div className="sa-content-grid">
                 {/* Recent Tenants */}
                 <div className="sa-glass-card" style={{ padding: '24px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
                         <div>
                             <h3 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--sa-text-primary)' }}>Recent Restaurants</h3>
                             <p style={{ color: 'var(--sa-text-secondary)', fontSize: '13px', marginTop: '4px' }}>Latest tenant activities</p>
                         </div>
-                        <button className="sa-btn sa-btn-ghost" style={{ padding: '8px 16px', fontSize: '13px' }}>
+                        <button className="sa-btn sa-btn-ghost" style={{ padding: '8px 16px', fontSize: '13px', width: 'auto' }}>
                             View All <ChevronRight size={16} />
                         </button>
                     </div>
@@ -205,11 +205,11 @@ const AdminDashboard: React.FC = () => {
                             <tbody>
                                 {mockRecentTenants.map(tenant => (
                                     <tr key={tenant.id}>
-                                        <td style={{ fontWeight: 700 }}>{tenant.restaurantName}</td>
-                                        <td style={{ color: 'var(--sa-text-secondary)' }}>{tenant.ownerName}</td>
-                                        <td>{getStatusBadge(tenant.status!)}</td>
-                                        <td>{getPlanBadge(tenant.subscriptionPlan!)}</td>
-                                        <td style={{ fontWeight: 700, color: tenant.totalRevenue! > 0 ? 'var(--sa-success)' : 'var(--sa-text-secondary)' }}>
+                                        <td data-label="Restaurant" style={{ fontWeight: 700 }}>{tenant.restaurantName}</td>
+                                        <td data-label="Owner" style={{ color: 'var(--sa-text-secondary)' }}>{tenant.ownerName}</td>
+                                        <td data-label="Status">{getStatusBadge(tenant.status!)}</td>
+                                        <td data-label="Plan">{getPlanBadge(tenant.subscriptionPlan!)}</td>
+                                        <td data-label="Revenue" style={{ fontWeight: 700, color: tenant.totalRevenue! > 0 ? 'var(--sa-success)' : 'var(--sa-text-secondary)' }}>
                                             ${tenant.totalRevenue?.toLocaleString()}
                                         </td>
                                     </tr>

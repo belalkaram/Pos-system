@@ -14,6 +14,7 @@ import Login from './pages/Login';
 
 // Dashboard
 import Dashboard from './pages/Dashboard';
+import Presentation from './pages/Presentation';
 
 // ============================================
 // 1. البيانات الأساسية (Basic Data)
@@ -192,6 +193,9 @@ const App: React.FC = () => {
                     <Route element={<ProtectedRoute allowedRoles={['admin', 'accountant']} />}>
                       <Route index element={<Dashboard />} />
                     </Route>
+
+                    {/* صفحة العرض التقديمي */}
+                    <Route path="presentation" element={<Presentation />} />
 
                     {/* ======================================== */}
                     {/* 1. البيانات الأساسية (Basic Data) */}

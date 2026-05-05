@@ -54,6 +54,13 @@ const MENU_GROUPS: MenuGroup[] = [
         icon: LayoutDashboard,
         path: '/'
       },
+      {
+        id: 'presentation',
+        labelAr: 'تعرف علينا',
+        labelEn: 'About Us',
+        icon: InfoIcon,
+        path: '/presentation'
+      },
     ]
   },
   // المجموعة 2: البيانات الأساسية

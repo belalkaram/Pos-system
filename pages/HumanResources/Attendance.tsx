@@ -5,8 +5,8 @@ import React, { useState, useMemo } from 'react';
 import { useData } from '../../context/DataContext';
 import { useLanguage } from '../../context/LanguageContext';
 import {
-    Clock, Search, Plus, XCircle, Calendar,
-    CheckCircle, XIcon, AlertCircle, User, Users
+    Plus, XCircle, Calendar,
+    CheckCircle, XIcon, AlertCircle
 } from 'lucide-react';
 
 interface AttendanceRecord {
@@ -123,9 +123,16 @@ const Attendance: React.FC = () => {
         setFormData({ employeeId: '', checkIn: '', checkOut: '', status: 'present', notes: '' });
     };
 
+    const getEmployeeDisplayName = (employee: any) => {
+        if (!employee) return '-';
+        return language === 'ar'
+            ? (employee.nameAr || employee.nameEn || employee.name || '-')
+            : (employee.nameEn || employee.nameAr || employee.name || '-');
+    };
+
     const getEmployeeName = (id: string) => {
         const emp = employees.find(e => e.id === id);
-        return emp?.name || '-';
+        return getEmployeeDisplayName(emp);
     };
 
     const getStatusColor = (status: AttendanceRecord['status']) => {
@@ -286,9 +293,9 @@ const Attendance: React.FC = () => {
                                 <td className="p-5">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center font-black text-lg text-red-500 border border-red-500/20">
-                                            {emp.name.charAt(0)}
+                                            {getEmployeeDisplayName(emp).charAt(0)}
                                         </div>
-                                        <span className="font-black text-textPrimary">{emp.name}</span>
+                                        <span className="font-black text-textPrimary">{getEmployeeDisplayName(emp)}</span>
                                     </div>
                                 </td>
                                 <td className="p-5 text-center"><span className="text-secondary">-</span></td>
@@ -337,7 +344,7 @@ const Attendance: React.FC = () => {
                                 >
                                     <option value="">{language === 'ar' ? 'اختر الموظف...' : 'Select Employee...'}</option>
                                     {absentEmployees.map(emp => (
-                                        <option key={emp.id} value={emp.id}>{emp.name}</option>
+                                        <option key={emp.id} value={emp.id}>{getEmployeeDisplayName(emp)}</option>
                                     ))}
                                 </select>
                             </div>

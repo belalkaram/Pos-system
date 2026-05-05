@@ -103,7 +103,7 @@ const TenantManagement: React.FC = () => {
     return (
         <div>
             {/* Page Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+            <div className="sa-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
                     <h1 className="sa-page-title">Restaurants Management</h1>
                     <p style={{ color: 'var(--sa-text-secondary)', fontSize: '14px', marginTop: '4px' }}>
@@ -117,7 +117,7 @@ const TenantManagement: React.FC = () => {
 
             {/* Filters Bar */}
             <div className="sa-glass-card" style={{ padding: '20px', marginBottom: '24px' }}>
-                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div className="sa-filters-bar" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
                     {/* Search */}
                     <div style={{ flex: 1, minWidth: '250px', position: 'relative' }}>
                         <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--sa-text-secondary)' }} />
@@ -168,7 +168,7 @@ const TenantManagement: React.FC = () => {
             {/* Tenants Table */}
             <div className="sa-glass-card" style={{ padding: '24px' }}>
                 <div className="sa-table-container">
-                    <table className="sa-table" style={{ minWidth: '900px' }}>
+                    <table className="sa-table">
                         <thead>
                             <tr>
                                 <th>Restaurant</th>
@@ -184,9 +184,9 @@ const TenantManagement: React.FC = () => {
                         <tbody>
                             {paginatedTenants.map(tenant => (
                                 <tr key={tenant.id}>
-                                    <td>
+                                    <td data-label="Restaurant">
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                            <div style={{ width: '40px', height: '40px', background: 'var(--sa-accent-gradient)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: 'white', fontSize: '14px' }}>
+                                            <div style={{ width: '40px', height: '40px', background: 'var(--sa-accent-gradient)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: 'white', fontSize: '14px', flexShrink: 0 }}>
                                                 {tenant.restaurantName.charAt(0)}
                                             </div>
                                             <div>
@@ -195,32 +195,34 @@ const TenantManagement: React.FC = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        <p style={{ fontWeight: 600 }}>{tenant.ownerName}</p>
-                                        <p style={{ fontSize: '12px', color: 'var(--sa-text-secondary)' }}>{tenant.email}</p>
+                                    <td data-label="Owner">
+                                        <div>
+                                            <p style={{ fontWeight: 600 }}>{tenant.ownerName}</p>
+                                            <p style={{ fontSize: '12px', color: 'var(--sa-text-secondary)' }}>{tenant.email}</p>
+                                        </div>
                                     </td>
-                                    <td>{getStatusBadge(tenant.status)}</td>
-                                    <td>{getPlanBadge(tenant.subscriptionPlan)}</td>
-                                    <td style={{ fontWeight: 600 }}>{tenant.totalOrders.toLocaleString()}</td>
-                                    <td style={{ fontWeight: 700, color: 'var(--sa-success)' }}>${tenant.totalRevenue.toLocaleString()}</td>
-                                    <td style={{ color: 'var(--sa-text-secondary)', fontSize: '13px' }}>{tenant.lastActive}</td>
-                                    <td>
-                                        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-                                            <button onClick={() => openTenantDetail(tenant)} className="sa-btn sa-btn-ghost" style={{ padding: '8px' }} title="View Details">
+                                    <td data-label="Status">{getStatusBadge(tenant.status)}</td>
+                                    <td data-label="Plan">{getPlanBadge(tenant.subscriptionPlan)}</td>
+                                    <td data-label="Orders" style={{ fontWeight: 600 }}>{tenant.totalOrders.toLocaleString()}</td>
+                                    <td data-label="Revenue" style={{ fontWeight: 700, color: 'var(--sa-success)' }}>${tenant.totalRevenue.toLocaleString()}</td>
+                                    <td data-label="Last Active" style={{ color: 'var(--sa-text-secondary)', fontSize: '13px' }}>{tenant.lastActive}</td>
+                                    <td data-label="Actions">
+                                        <div className="sa-table-actions" style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                                            <button onClick={() => openTenantDetail(tenant)} className="sa-btn sa-btn-ghost" style={{ padding: '8px', width: 'auto' }} title="View Details">
                                                 <Eye size={16} />
                                             </button>
-                                            <button className="sa-btn sa-btn-ghost" style={{ padding: '8px' }} title="Edit">
+                                            <button className="sa-btn sa-btn-ghost" style={{ padding: '8px', width: 'auto' }} title="Edit">
                                                 <Edit2 size={16} />
                                             </button>
-                                            <button className="sa-btn sa-btn-ghost" style={{ padding: '8px', color: 'var(--sa-info)' }} title="Login As">
+                                            <button className="sa-btn sa-btn-ghost" style={{ padding: '8px', color: 'var(--sa-info)', width: 'auto' }} title="Login As">
                                                 <LogIn size={16} />
                                             </button>
                                             {tenant.status !== 'suspended' ? (
-                                                <button className="sa-btn sa-btn-ghost" style={{ padding: '8px', color: 'var(--sa-warning)' }} title="Suspend">
+                                                <button className="sa-btn sa-btn-ghost" style={{ padding: '8px', color: 'var(--sa-warning)', width: 'auto' }} title="Suspend">
                                                     <Ban size={16} />
                                                 </button>
                                             ) : (
-                                                <button className="sa-btn sa-btn-ghost" style={{ padding: '8px', color: 'var(--sa-success)' }} title="Reactivate">
+                                                <button className="sa-btn sa-btn-ghost" style={{ padding: '8px', color: 'var(--sa-success)', width: 'auto' }} title="Reactivate">
                                                     <RefreshCw size={16} />
                                                 </button>
                                             )}
@@ -233,20 +235,20 @@ const TenantManagement: React.FC = () => {
                 </div>
 
                 {/* Pagination */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--sa-border)' }}>
-                    <p style={{ color: 'var(--sa-text-secondary)', fontSize: '14px' }}>
+                <div className="sa-pagination" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--sa-border)' }}>
+                    <p className="sa-pagination-info" style={{ color: 'var(--sa-text-secondary)', fontSize: '14px' }}>
                         Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, filteredTenants.length)} of {filteredTenants.length} restaurants
                     </p>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                        <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="sa-btn sa-btn-ghost" style={{ padding: '8px 12px', opacity: currentPage === 1 ? 0.5 : 1 }}>
+                    <div className="sa-pagination-buttons" style={{ display: 'flex', gap: '8px' }}>
+                        <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="sa-btn sa-btn-ghost" style={{ padding: '8px 12px', opacity: currentPage === 1 ? 0.5 : 1, width: 'auto' }}>
                             <ChevronLeft size={18} />
                         </button>
                         {Array.from({ length: totalPages }, (_, i) => (
-                            <button key={i + 1} onClick={() => setCurrentPage(i + 1)} className={`sa-btn ${currentPage === i + 1 ? 'sa-btn-primary' : 'sa-btn-ghost'}`} style={{ padding: '8px 14px', minWidth: '40px' }}>
+                            <button key={i + 1} onClick={() => setCurrentPage(i + 1)} className={`sa-btn ${currentPage === i + 1 ? 'sa-btn-primary' : 'sa-btn-ghost'}`} style={{ padding: '8px 14px', minWidth: '40px', width: 'auto' }}>
                                 {i + 1}
                             </button>
                         ))}
-                        <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="sa-btn sa-btn-ghost" style={{ padding: '8px 12px', opacity: currentPage === totalPages ? 0.5 : 1 }}>
+                        <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="sa-btn sa-btn-ghost" style={{ padding: '8px 12px', opacity: currentPage === totalPages ? 0.5 : 1, width: 'auto' }}>
                             <ChevronRight size={18} />
                         </button>
                     </div>
@@ -279,7 +281,7 @@ const TenantManagement: React.FC = () => {
                         {/* Modal Content */}
                         <div style={{ padding: '24px' }}>
                             {/* Stats Row */}
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+                            <div className="sa-modal-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
                                 <div style={{ background: 'var(--sa-bg-surface)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
                                     <Package size={20} style={{ color: 'var(--sa-accent-primary)', marginBottom: '8px' }} />
                                     <p style={{ fontSize: '20px', fontWeight: 800 }}>{selectedTenant.totalOrders.toLocaleString()}</p>
@@ -303,7 +305,7 @@ const TenantManagement: React.FC = () => {
                             </div>
 
                             {/* Details Grid */}
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                            <div className="sa-modal-details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                                 {/* Owner Info */}
                                 <div>
                                     <h4 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--sa-text-secondary)', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Owner Information</h4>
@@ -370,7 +372,7 @@ const TenantManagement: React.FC = () => {
                             </div>
 
                             {/* Actions */}
-                            <div style={{ display: 'flex', gap: '12px', marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--sa-border)' }}>
+                            <div className="sa-modal-actions" style={{ display: 'flex', gap: '12px', marginTop: '32px', paddingTop: '24px', borderTop: '1px solid var(--sa-border)' }}>
                                 <button className="sa-btn sa-btn-primary" style={{ flex: 1 }}>
                                     <LogIn size={18} /> Login as Restaurant
                                 </button>

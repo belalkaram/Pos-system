@@ -18,6 +18,34 @@ interface PriceList {
     isActive: boolean;
 }
 
+const normalizePriceList = (raw: any): PriceList | null => {
+    if (!raw || typeof raw !== 'object') return null;
+
+    const id = String(raw.id ?? Date.now());
+    const name = String(raw.name ?? raw.nameAr ?? raw.nameEn ?? '').trim();
+    if (!name) return null;
+
+    const discountRaw = raw.discountPercent ?? raw.discount ?? 0;
+    const discountPercent = Number.isFinite(Number(discountRaw)) ? Number(discountRaw) : 0;
+
+    const items = Array.isArray(raw.items)
+        ? raw.items.map((item: any) => ({
+            itemId: String(item?.itemId ?? item?.id ?? ''),
+            itemName: String(item?.itemName ?? item?.name ?? item?.nameAr ?? item?.nameEn ?? ''),
+            customPrice: Number(item?.customPrice ?? item?.price ?? 0) || 0,
+        }))
+        : [];
+
+    return {
+        id,
+        name,
+        description: raw.description ? String(raw.description) : '',
+        discountPercent: Math.max(0, Math.min(100, discountPercent)),
+        items,
+        isActive: typeof raw.isActive === 'boolean' ? raw.isActive : true,
+    };
+};
+
 const PriceLists: React.FC = () => {
     const { menuItems, settings } = useData();
     const { language } = useLanguage();
@@ -25,7 +53,17 @@ const PriceLists: React.FC = () => {
 
     const [priceLists, setPriceLists] = useState<PriceList[]>(() => {
         const saved = localStorage.getItem('price_lists');
-        return saved ? JSON.parse(saved) : [];
+        if (!saved) return [];
+
+        try {
+            const parsed = JSON.parse(saved);
+            if (!Array.isArray(parsed)) return [];
+            return parsed
+                .map(normalizePriceList)
+                .filter((list): list is PriceList => list !== null);
+        } catch {
+            return [];
+        }
     });
 
     const [showModal, setShowModal] = useState(false);
@@ -45,7 +83,7 @@ const PriceLists: React.FC = () => {
     };
 
     const filteredLists = priceLists.filter(p =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        (p.name || '').toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     const handleAdd = () => {
@@ -245,12 +283,13 @@ const PriceLists: React.FC = () => {
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {menuItems.slice(0, 8).map(item => {
-                            const discountedPrice = item.basePrice * (1 - selectedList.discountPercent / 100);
+                            const basePrice = Number((item as any).basePrice ?? (item as any).price ?? 0);
+                            const discountedPrice = basePrice * (1 - selectedList.discountPercent / 100);
                             return (
                                 <div key={item.id} className="bg-background rounded-xl p-4 border border-cardAccent">
                                     <p className="font-bold text-textPrimary text-sm truncate">{language === 'ar' ? item.nameAr : item.nameEn}</p>
                                     <div className="flex items-center gap-2 mt-2">
-                                        <span className="text-secondary line-through text-xs">{item.basePrice.toLocaleString()}</span>
+                                        <span className="text-secondary line-through text-xs">{basePrice.toLocaleString()}</span>
                                         <span className="font-black text-accentGreen">{discountedPrice.toLocaleString()} {currency}</span>
                                     </div>
                                 </div>
